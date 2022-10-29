@@ -1,0 +1,34 @@
+linux command lines for ngs manipulation
+
+Reference genome
+count of each base in the entire reference genome file 
+(A for loop is used to iterate over each character until the end ("NF") is reached. Again the counts for each letter are stored in a simple data structure and once the end of the file is reach the results are printed.)
+cat <<.fa>> | grep -v ">" | awk '{for (i=1; i<=NF; i++){a[$i]++}}END{for (i in a){print a[i], i}}' FS= - | sort -k 2 | column -t
+
+count number of occurance of <<pattern>> present in reference genome file
+cat <<.fa>> | grep -v ">" | grep -o -i <<pattern>> | wc -l
+
+Number of repetitive elements corresponded to repetitive elements (repetitive elements in the sequence are represented in lower case)
+cat <<.fa>> | grep -o '[a-z]' | wc -l
+
+Annotations
+Number of unique gene IDs are in the .gtf file
+cat <<.gtf>> | grep -w gene | wc -l
+
+RNA-seq data
+number of reads in library
+zcat <<.fastq.gz>> | grep -P "read name prefix" | wc -l
+
+Determining the strandedness of RNA-seq data
+
+
+
+
+
+
+
+
+
+
+
+
