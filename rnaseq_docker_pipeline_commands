@@ -1,0 +1,10 @@
+#build hisat2 index
+sudo docker run -v ${PWD}:/reference -u $(id -u ${USER}):$(id -g ${USER}) systemsgenetics/gemmaker  /bin/bash -c "cd /reference; hisat2-build --ss splicesites.tsv --exon exons.tsv chr22_with_ERCC92.fa chr22_with_ERCC92.gtf"
+
+#perform fastqc on rna seq reads
+for file in *.fastq.gz; do sudo docker run -v ${PWD}:/data -u $(id -u ${USER}):$(id -g ${USER}) pegi3s/fastqc /data/*.fastq.gz; done
+
+#alignment using hisat2
+sudo docker run -v ${PWD}:/data -u $(id -u ${USER}):$(id -g ${USER}) dceoy/hisat2 --rg-id=UHR_Rep1 --rg SM:UHR --rg LB:UHR_Rep1_ERCC-Mix1 --rg PL:ILLUMINA --rg PU:CXX1234-ACTGAC.1 -x /data/ref_genome/chr22_with_ERCC92 --dta --rna-strandness RF -1 /data/RNA_data/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 /data/RNA_data/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz -S /data/rna_alignment/UHR_Rep1.sam
+hisat2 --rg-id=UHR_Rep1 --rg SM:UHR --rg LB:UHR_Rep1_ERCC-Mix1 --rg PL:ILLUMINA --rg PU:CXX1234-ACTGAC.1 -x ./ref_genome/chr22_with_ERCC92 --dta --rna-strandness RF -1 ./RNA_data/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 ./RNA_data/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./rna_alignment/UHR_Rep1.sam
+
