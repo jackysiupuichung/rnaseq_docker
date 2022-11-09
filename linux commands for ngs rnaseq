@@ -15,6 +15,9 @@ Annotations
 Number of unique gene IDs are in the .gtf file
 cat <<.gtf>> | grep -w gene | wc -l
 
+Sort by chromosome name then genomic start location (numerically)
+sort <<.gtf>> -k1,1 -k4,4n > gencode.v32.all.gtf
+
 RNA-seq data
 number of reads in library
 zcat <<.fastq.gz>> | grep -P "read name prefix" | wc -l
