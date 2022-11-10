@@ -1,0 +1,131 @@
+  100  mkdir -p ~/workspace/rnaseq/
+  101  export RNA_HOME=~/workspace/rnaseq
+  102  export RNA_DATA_DIR=$RNA_HOME/data
+  103  export RNA_DATA_TRIM_DIR=$RNA_DATA_DIR/trimmed
+  104  export RNA_REFS_DIR=$RNA_HOME/refs
+  105  export RNA_REF_INDEX=$RNA_REFS_DIR/chr22_with_ERCC92
+  106  export RNA_REF_FASTA=$RNA_REF_INDEX.fa
+  107  export RNA_REF_GTF=$RNA_REF_INDEX.gtf
+  108  export RNA_ALIGN_DIR=$RNA_HOME/alignments/hisat2
+  109  cd ~
+  110  wget http://genomedata.org/rnaseq-tutorial/bashrc_copy
+  111  mv bashrc_copy ~/.bashrc
+  112  source ~/.bashrc
+  113  env | grep RNA
+  114  cd $RNA_HOME
+  115  echo $RNA_REFS_DIR
+  116  mkdir -p $RNA_REFS_DIR
+  117  cd $RNA_REFS_DIR
+  118  wget http://genomedata.org/rnaseq-tutorial/fasta/GRCh38/chr22_with_ERCC92.fa
+  119  ls
+  120  echo $RNA_REFS_DIR
+  121  cd $RNA_REFS_DIR
+  122  wget http://genomedata.org/rnaseq-tutorial/annotations/GRCh38/chr22_with_ERCC92.gtf
+  123  cd $RNA_REFS_DIR
+  124  hisat2_extract_splice_sites.py $RNA_REF_GTF > $RNA_REFS_DIR/splicesites.tsv
+  125  hisat2_extract_exons.py $RNA_REF_GTF > $RNA_REFS_DIR/exons.tsv
+  126  hisat2-build -p 8 --ss $RNA_REFS_DIR/splicesites.tsv --exon $RNA_REFS_DIR/exons.tsv $RNA_REF_FASTA $RNA_REF_INDEX
+  127  ls
+  128  echo $RNA_DATA_DIR
+  129  mkdir -p $RNA_DATA_DIR
+  130  cd $RNA_DATA_DIR
+  131  wget http://genomedata.org/rnaseq-tutorial/HBR_UHR_ERCC_ds_5pc.tar
+  132  tar -xvf HBR_UHR_ERCC_ds_5pc.tar
+  133  ls
+  134  cd ¬
+  135  CD ~
+  136  cd ~
+  137  cd $RNA_HOME/data
+  138  fastqc *.fastq.gz
+  139  cd $RNA_HOME/data
+  140  mkdir fastqc
+  141  mv *_fastqc* fastqc
+  142  echo $RNA_DATA_TRIM_DIR
+  143  mkdir -p $RNA_DATA_TRIM_DIR
+  144  echo $RNA_REFS_DIR
+  145  mkdir -p $RNA_REFS_DIR
+  146  cd $RNA_REFS_DIR
+  147  wget http://genomedata.org/rnaseq-tutorial/illumina_multiplex.fa
+  148  cd $RNA_HOME
+  149  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22
+  150  cd $RNA_HOME
+  151  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22
+  152  which python
+  153  vim flexbar.py
+  154  which python3
+  155  python3 flexbar.py
+  156  vim flexbar.py
+  157  python3 flexbar.py
+  158  vim flexbar.py
+  159  python3 flexbar.py
+  160  vim flexbar.py
+  161  python3 flexbar.py
+  162  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22
+  163  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22
+  164  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22
+  165  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22
+  166  flexbar --adapter-min-overlap 7 --adapter-trim-end RIGHT --adapters $RNA_REFS_DIR/illumina_multiplex.fa --pre-trim-left 13 --max-uncalled 300 --min-read-length 25 --threads 8 --zip-output GZ --reads $RNA_DATA_DIR/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz --reads2 $RNA_DATA_DIR/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz --target $RNA_DATA_TRIM_DIR/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22
+  167  cd $RNA_DATA_TRIM_DIR
+  168  fastqc *.fastq.gz
+  169  cd $RNA_DATA_TRIM_DIR
+  170  mkdir fastqc
+  171  mv *fastqc* fastqc
+  172  ls
+  173  echo $RNA_ALIGN_DIR
+  174  mkdir -p $RNA_ALIGN_DIR
+  175  cd $RNA_ALIGN_DIR
+  176  hisat2 --rg-id=UHR_Rep1 --rg SM:UHR --rg LB:UHR_Rep1_ERCC-Mix1 --rg PL:ILLUMINA --rg PU:CXX1234-ACTGAC.1 -x $RNA_REF_INDEX --dta --rna-strandness RF -1 $RNA_DATA_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 $RNA_DATA_DIR/UHR_Rep1_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./UHR_Rep1.sam
+  177  hisat2 --rg-id=UHR_Rep2 --rg SM:UHR --rg LB:UHR_Rep2_ERCC-Mix1 --rg PL:ILLUMINA --rg PU:CXX1234-TGACAC.1 -x $RNA_REF_INDEX --dta --rna-strandness RF -1 $RNA_DATA_DIR/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 $RNA_DATA_DIR/UHR_Rep2_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./UHR_Rep2.sam
+  178  hisat2 --rg-id=UHR_Rep3 --rg SM:UHR --rg LB:UHR_Rep3_ERCC-Mix1 --rg PL:ILLUMINA --rg PU:CXX1234-CTGACA.1 -x $RNA_REF_INDEX --dta --rna-strandness RF -1 $RNA_DATA_DIR/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 $RNA_DATA_DIR/UHR_Rep3_ERCC-Mix1_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./UHR_Rep3.sam
+  179  hisat2 --rg-id=HBR_Rep1 --rg SM:HBR --rg LB:HBR_Rep1_ERCC-Mix2 --rg PL:ILLUMINA --rg PU:CXX1234-TGACAC.1 -x $RNA_REF_INDEX --dta --rna-strandness RF -1 $RNA_DATA_DIR/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 $RNA_DATA_DIR/HBR_Rep1_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./HBR_Rep1.sam
+  180  hisat2 --rg-id=HBR_Rep2 --rg SM:HBR --rg LB:HBR_Rep2_ERCC-Mix2 --rg PL:ILLUMINA --rg PU:CXX1234-GACACT.1 -x $RNA_REF_INDEX --dta --rna-strandness RF -1 $RNA_DATA_DIR/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 $RNA_DATA_DIR/HBR_Rep2_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./HBR_Rep2.sam
+  181  hisat2 --rg-id=HBR_Rep3 --rg SM:HBR --rg LB:HBR_Rep3_ERCC-Mix2 --rg PL:ILLUMINA --rg PU:CXX1234-ACACTG.1 -x $RNA_REF_INDEX --dta --rna-strandness RF -1 $RNA_DATA_DIR/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22.read1.fastq.gz -2 $RNA_DATA_DIR/HBR_Rep3_ERCC-Mix2_Build37-ErccTranscripts-chr22.read2.fastq.gz -S ./HBR_Rep3.sam
+  182  samtools sort -@ 8 -o UHR_Rep1.bam UHR_Rep1.sam
+  183  samtools sort -@ 8 -o UHR_Rep2.bam UHR_Rep2.sam
+  184  samtools sort -@ 8 -o UHR_Rep3.bam UHR_Rep3.sam
+  185  samtools sort -@ 8 -o HBR_Rep1.bam HBR_Rep1.sam
+  186  samtools sort -@ 8 -o HBR_Rep2.bam HBR_Rep2.sam
+  187  samtools sort -@ 8 -o HBR_Rep3.bam HBR_Rep3.sam
+  188  sudo apt-get install libncurses5
+  189  samtools sort -@ 8 -o UHR_Rep1.bam UHR_Rep1.sam
+  190  samtools sort -@ 8 -o UHR_Rep2.bam UHR_Rep2.sam
+  191  samtools sort -@ 8 -o UHR_Rep3.bam UHR_Rep3.sam
+  192  samtools sort -@ 8 -o HBR_Rep1.bam HBR_Rep1.sam
+  193  samtools sort -@ 8 -o HBR_Rep2.bam HBR_Rep2.sam
+  194  samtools sort -@ 8 -o HBR_Rep3.bam HBR_Rep3.sam
+  195  cd $RNA_HOME/alignments/hisat2
+  196  java -Xmx2g -jar $PICARD MergeSamFiles OUTPUT=UHR.bam INPUT=UHR_Rep1.bam INPUT=UHR_Rep2.bam INPUT=UHR_Rep3.bam
+  197  java -Xmx2g -jar $PICARD MergeSamFiles OUTPUT=HBR.bam INPUT=HBR_Rep1.bam INPUT=HBR_Rep2.bam INPUT=HBR_Rep3.bam
+  198  java -Xmx2g -jar $PICARD.jar MergeSamFiles OUTPUT=HBR.bam INPUT=HBR_Rep1.bam INPUT=HBR_Rep2.bam INPUT=HBR_Rep3.bam
+  199  java -Xmx2g -jar $PICARD MergeSamFiles OUTPUT=HBR.bam INPUT=HBR_Rep1.bam INPUT=HBR_Rep2.bam INPUT=HBR_Rep3.bam
+  200  echo $PICARD
+  201  cat $PICARD
+  202  export PICARD=/usr/local/picard/picard.jar
+  203  cat $PICARD
+  204  cat ~/.basharc
+  205  cat ~/.bashrc
+  206  cat $PICARD
+  207  cd /user
+  208  cd ~
+  209  ls
+  210  cd ..
+  211  ls
+  212  cd ..
+  213  ls
+  214  cd user
+  215  cd usr
+  216  ls
+  217  cd local
+  218  ls
+  219  cd ~
+  220  wget http://genomedata.org/rnaseq-tutorial/bashrc_copy
+  221  mv bashrc_copy ~/.bashrc
+  222  source ~/.bashrc
+  223  activate rnaseq
+  224  conda env list
+  225  source activate rnaseq
+  226  ls
+  227  cd $RNA_HOME/alignments/hisat2
+  228  java -Xmx2g -jar $PICARD MergeSamFiles OUTPUT=UHR.bam INPUT=UHR_Rep1.bam INPUT=UHR_Rep2.bam INPUT=UHR_Rep3.bam
+  229  cd /home/jspc709/src/
+  230  history
