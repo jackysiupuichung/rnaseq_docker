@@ -126,6 +126,40 @@
   225  source activate rnaseq
   226  ls
   227  cd $RNA_HOME/alignments/hisat2
-  228  java -Xmx2g -jar $PICARD MergeSamFiles OUTPUT=UHR.bam INPUT=UHR_Rep1.bam INPUT=UHR_Rep2.bam INPUT=UHR_Rep3.bam
-  229  cd /home/jspc709/src/
-  230  history
+  389  cd $RNA_HOME/
+  390  mkdir -p expression/htseq_counts
+  391  cd expression/htseq_counts
+  392  htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id $RNA_ALIGN_DIR/UHR_Rep1.bam $RNA_REF_GTF > UHR_Rep1_gene.tsv
+  393  htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id $RNA_ALIGN_DIR/UHR_Rep2.bam $RNA_REF_GTF > UHR_Rep2_gene.tsv
+  394  htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id $RNA_ALIGN_DIR/UHR_Rep3.bam $RNA_REF_GTF > UHR_Rep3_gene.tsv
+  395  htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id $RNA_ALIGN_DIR/HBR_Rep1.bam $RNA_REF_GTF > HBR_Rep1_gene.tsv
+  396  htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id $RNA_ALIGN_DIR/HBR_Rep2.bam $RNA_REF_GTF > HBR_Rep2_gene.tsv
+  397  htseq-count --format bam --order pos --mode intersection-strict --stranded reverse --minaqual 1 --type exon --idattr gene_id $RNA_ALIGN_DIR/HBR_Rep3.bam $RNA_REF_GTF > HBR_Rep3_gene.tsv
+  398  cd $RNA_HOME/expression/htseq_counts/
+  399  join UHR_Rep1_gene.tsv UHR_Rep2_gene.tsv | join - UHR_Rep3_gene.tsv | join - HBR_Rep1_gene.tsv | join - HBR_Rep2_gene.tsv | join - HBR_Rep3_gene.tsv > gene_read_counts_table_all.tsv
+  400  echo "GeneID UHR_Rep1 UHR_Rep2 UHR_Rep3 HBR_Rep1 HBR_Rep2 HBR_Rep3" > header.txt
+  401  cat header.txt gene_read_counts_table_all.tsv | grep -v "__" | awk -v OFS="\t" '$1=$1' > gene_read_counts_table_all_final.tsv
+  402  rm -f gene_read_counts_table_all.tsv header.txt
+  403  head gene_read_counts_table_all_final.tsv | column -t
+  404  cd $RNA_HOME/expression/htseq_counts
+  405  wget http://genomedata.org/rnaseq-tutorial/ERCC_Controls_Analysis.txt
+  406  cat ERCC_Controls_Analysis.txt
+  407  wget https://github.com/griffithlab/rnabio.org/raw/master/assets/scripts/Tutorial_ERCC_expression.pl
+  408  chmod +x Tutorial_ERCC_expression.pl
+  409  ./Tutorial_ERCC_expression.pl
+  410  cat $RNA_HOME/expression/htseq_counts/ercc_read_counts.tsv
+  411  wget https://github.com/griffithlab/rnabio.org/raw/master/assets/scripts/Tutorial_ERCC_expression.R
+  412  chmod +x Tutorial_ERCC_expression.R
+  413  ./Tutorial_ERCC_expression.R ercc_read_counts.tsv
+  414  conda install -c r r
+  415  r --version
+  416  sudo apt update -qq
+  417  sudo apt-get update
+  418  sudo apt install --no-install-recommends software-properties-common dirmngr
+  419  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+  420  cd ~
+  421  sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+  422  sudo apt install --no-install-recommends r-base
+  423  cd $RNA_HOME/expression/htseq_counts
+  424  ls
+  425  ./Tutorial_ERCC_expression.R ercc_read_counts.tsv
