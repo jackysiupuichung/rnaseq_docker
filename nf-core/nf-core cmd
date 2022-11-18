@@ -1,0 +1,1 @@
+nextflow run nf-core/rnaseq --input samplesheet.csv --outdir ./results -profile docker --fasta ~/workspace/rnaseq/refs/chr22_with_ERCC92.fa --hisat2_index ~/workspace/rnaseq/refs --gtf ~/workspace/rnaseq/refs/chr22_with_ERCC92.gtf   --skip_trimming --aligner hisat2 --aligner star_salmon --max_memory 2GB --max_cpus 3
