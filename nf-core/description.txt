@@ -1,0 +1,4 @@
+featurecounts
+#GTF annotation from NCBI RefSeq contains empty gene_id values. This is disallowed in featureCounts.
+#To remove annotation samples without gene_id
+grep -v 'gene_id ""' .gtf > .gtf
